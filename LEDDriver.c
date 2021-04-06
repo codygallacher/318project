@@ -1,4 +1,8 @@
-//LEDDriver.c
+/* *******************
+
+LEDDriver.c FOR WARNING SYSTEM
+
+***********************/
 
 #include "LEDDriver.h"
 
@@ -119,7 +123,7 @@ void allLEDson() //Lower bank on-> very small delay ->upper bank on
 
   __delay_cycles(100);  //Delay 
   
-  
+  ledValue_ =0x20;
   
   //Refresh upper bank (LEDs 5-9)
   GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN7);
@@ -151,7 +155,7 @@ void allLEDson() //Lower bank on-> very small delay ->upper bank on
  else
    GPIO_setOutputHighOnPin(GPIO_PORT_P8, GPIO_PIN0);
     
-  __delay_cycles(10); //Very short delay so it looks like all LEDs are on at once
+  __delay_cycles(100); //Very short delay so it looks like all LEDs are on at once
 }
  
    
@@ -186,9 +190,9 @@ void allLEDson() //Lower bank on-> very small delay ->upper bank on
    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN3);
  
 
-  __delay_cycles(100);  //Delay 
+  __delay_cycles(100000);  //Delay 
   
-  
+  ledValue_=0x20;
   
   //Turn on upper bank (LEDs 5-9)
   GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN7);
@@ -220,11 +224,11 @@ void allLEDson() //Lower bank on-> very small delay ->upper bank on
  else
    GPIO_setOutputHighOnPin(GPIO_PORT_P8, GPIO_PIN0);
     
-  __delay_cycles(100);  
+  __delay_cycles(100000);  
  
  
   //Turn off lower bank (LEDs 1-4)
- GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN7);//High output on bottom rail to turn off lower bank LEDs
+ /*GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN7);//High output on bottom rail to turn off lower bank LEDs
  
  
  if(ledValue_ &0x01) //hexidecimal for LED: 01 hex= bit 1 (0001). If lower bit is 0...
@@ -286,7 +290,8 @@ void allLEDson() //Lower bank on-> very small delay ->upper bank on
  else
    GPIO_setOutputHighOnPin(GPIO_PORT_P8, GPIO_PIN0);
  
- __delay_cycles(100000);
+ __delay_cycles(100000);*/
+ 
 }
 
 void setLedDial(unsigned char value)    //SET DIAL VALUE//

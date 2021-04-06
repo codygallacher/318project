@@ -1,3 +1,9 @@
+/* *******************
+
+hal_LCD.h FOR WARNING SYSTEM
+
+***********************/
+
 /* --COPYRIGHT--,BSD
  * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
@@ -63,11 +69,12 @@
 #define LCDBMEMW ((int*)LCDBMEM)
 #endif
 
+extern void LCDnumbers();
 extern const char digit[10][2];
 extern const char alphabetBig[26][2];
 
 void Init_LCD(void);
-void displayScrollText(char*);
+void outputText(char*);
 void showChar(char, int);
 void clearLCD(void);
 

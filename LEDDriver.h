@@ -1,4 +1,8 @@
-//LEDDriver.h
+/* *******************
+
+LEDDriver.h FOR WARNING SYSTEM
+
+***********************/
 
 #include<msp430.h>
 #include<driverlib.h>
