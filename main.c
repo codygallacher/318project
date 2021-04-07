@@ -9,12 +9,13 @@ MAIN FOR WARNING SYSTEM
 #include "LEDDriver.h"
 #include "hal_LCD.h" 
 
-unsigned char SW1_interruptFlag_ = 0;
+unsigned char SW1_interruptFlag_ = 0; //Flags that activate when associatede switches are pressed
 unsigned char SW2_interruptFlag_ = 0;
 unsigned char SW3_interruptFlag_ = 0;
 unsigned char SW4_interruptFlag_ = 0;
 unsigned int count = 0; //global variable for LCDnumber function
-unsigned int maxPeople =0;
+unsigned int maxPeople =1; //occupancy limit set by user
+unsigned int delay=0; unsigned int time=0; //both used in pause / timer function
 
 #pragma vector = PORT1_VECTOR
 __interrupt void P1_ISR(void)
@@ -92,9 +93,12 @@ int main(void)
   Init_LCD();
    clearLCD(); showChar('0', pos3); 
    
-   unsigned int i=0; //used in the for loop inside the sw3 while loop
+   unsigned int i=0; //used in the if statements in while loops for outputting text
+   unsigned int j=0; 
+   unsigned int k=0; 
   while(1)
   {
+    LCDlimit(maxPeople);
     while(!SW3_interruptFlag_) //section where user sets occupancy limit
     { 
       if (i<1) //if statement so this text is only putput once
@@ -120,8 +124,41 @@ int main(void)
         SW2_interruptFlag_ = 0;}
       
    }   
-    //SW3_interruptFlag_ = 0; //reset switch 1 to zero so it can be reused to simulate a sensor input
+    
   
+   while(!SW4_interruptFlag_) //section where user sets delay time between shifts
+   { //SW3_interruptFlag_=0; //reset switch3 so it can be used again
+   if (j<1) //if statement so this text is only putput once
+      {
+      outputText("SET DELAY BETWEEN SHIFT GROUPS");
+      j++;
+      }
+    if(SW1_interruptFlag_)  
+        {delay++;
+          if(delay>20) //error handling
+          {outputText("MAXIMUM TIME EXCEEDED");}
+        LCDtime(delay);
+        __delay_cycles(300000); //debouncing delay 0.8 seconds
+        SW1_interruptFlag_ = 0;
+        }
+    
+    if(SW2_interruptFlag_) 
+        {delay--;
+          if(delay<0) //error handling
+          {outputText("CANNOT HAVE TIME LESS THAN ZERO");}
+        LCDtime(delay);
+        __delay_cycles(800000); //debouncing delay 0.8 seconds
+        SW2_interruptFlag_ = 0;
+        }
+   }
+  // SW3_interruptFlag_=1; //set switch 3 high again so the while loop at the start won't be called
+   
+   if (k<1) //if statement so this text is only putput once
+      {
+      outputText("COUNTING MODE");
+      k++;
+      }
+   
    LCDnumbers(count); //stop displaying limit and change to current occupancy
     if(SW1_interruptFlag_)
     {
@@ -137,17 +174,39 @@ int main(void)
     {
       count = count-1;
       countchar = (char)count;
-      if(maxPeople>20) //error handling
+      LCDnumbers(count); 
       __delay_cycles(300000); //debouncing delay
       SW2_interruptFlag_ = 0;
-      LCDnumbers(count);
+      
+       if(count ==0) //building has emptied
+      { outputText("DELAY PERIOD");
+        for(time =delay; time>=0;  time--)
+        {
+          __delay_cycles(1000000); //delay cycles units is microseconds
+          LCDtime(time); // new function used to show remaining time
+          
+          if(time==0) //end of program, reset inital values to start program again
+          {SW3_interruptFlag_=0;
+           SW3_interruptFlag_=0;
+          i=0; j=0;
+          maxPeople=0;
+          delay=0;
+          outputText("PROGRAM RESET");
+           break;} //reset to start of while(1) loop
+        }
+       }
+       else //building has not emptied
+       {
+         LCDnumbers(count); 
+       }
     }
     
-    if(SW4_interruptFlag_) //switch 4 can be used to remind the user of the occupancy limit
+  /* if(!SW4_interruptFlag_) //switch 4 can be used to remind the user of the occupancy limit
     {__delay_cycles(300000); //0.3s  delay
+    outputText("OCCUPANCY LIMIT REMINDER");
    LCDlimit(maxPeople);
-   __delay_cycles(5000000); //5 second delay
-    SW4_interruptFlag_ = 0;}
+   __delay_cycles(5000000); //5s  delay
+    SW4_interruptFlag_=1;}*/
     
     if(count == maxPeople) //occupancy limit reahced
       {
@@ -159,7 +218,7 @@ int main(void)
        outputText("MAXIMUM OCCUPANCY LIMIT EXCEEDED"); 
       }
    
-     else //count<maxPeople
+     else if(count<maxPeople) 
       {
         allLEDson();
          /* dialValue = dialValue * 0x02; // cycle clockwise

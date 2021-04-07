@@ -70,6 +70,7 @@ hal_LCD.h FOR WARNING SYSTEM
 #endif
 
 extern void LCDnumbers();
+extern void LCDtime();
 extern const char digit[10][2];
 extern const char alphabetBig[26][2];
 

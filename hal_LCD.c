@@ -265,3 +265,33 @@ void LCDlimit(unsigned int maxPeople)
     default: clearLCD();
     }
 }
+
+void LCDtime(unsigned int time)
+{
+   switch(time) //display timer on LED
+ {
+    case 0: clearLCD();showChar('0',pos1);break;
+    case 1: clearLCD();showChar('1',pos1);break;
+    case 2: clearLCD();showChar('2',pos1);break;
+    case 3: clearLCD();showChar('3',pos1);break;
+    case 4: clearLCD();showChar('4',pos1);break;
+    case 5: clearLCD();showChar('5',pos1);break;
+    case 6: clearLCD();showChar('6',pos1);break;
+    case 7: clearLCD();showChar('7',pos1);break;
+    case 8: clearLCD();showChar('8',pos1);break;
+    case 9: clearLCD();showChar('9',pos1);break;
+    case 10: clearLCD();showChar('1',pos1);showChar('0',pos2);break;
+    case 11: clearLCD();showChar('1',pos1);showChar('1',pos2);break;
+    case 12: clearLCD();showChar('1',pos1);showChar('2',pos2);break;
+    case 13: clearLCD();showChar('1',pos1);showChar('3',pos2);break;
+    case 14: clearLCD();showChar('1',pos1);showChar('4',pos2);break;
+    case 15: clearLCD();showChar('1',pos1);showChar('5',pos2);break;
+    case 16: clearLCD();showChar('1',pos1);showChar('6',pos2);break;
+    case 17: clearLCD();showChar('1',pos1);showChar('7',pos2);break;
+    case 18: clearLCD();showChar('1',pos1);showChar('8',pos2);break;
+    case 19: clearLCD();showChar('1',pos1);showChar('9',pos2);break;
+    case 20: clearLCD();showChar('2',pos1);showChar('0',pos2);break;
+    default: clearLCD();
+    }
+}
+
