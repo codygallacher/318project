@@ -187,8 +187,8 @@ int main(void)
           
           if(time==0) //end of program, reset inital values to start program again
           {SW3_interruptFlag_=0;
-           SW3_interruptFlag_=0;
-          i=0; j=0;
+           SW4_interruptFlag_=0;
+          i=0; j=0; k=0;
           maxPeople=0;
           delay=0;
           outputText("PROGRAM RESET");
